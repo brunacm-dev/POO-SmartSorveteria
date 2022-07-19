@@ -1,8 +1,8 @@
 package sorveteria;
+
 import java.io.*;
 import java.util.*;
 import avaliacao.*;
-
 
 import cliente.Cliente;
 
@@ -10,80 +10,60 @@ public class Sorveteria {
 	private String nome;
 	private boolean giraRoleta = false;
 	private int numMaquina;
-	private int total = 0;
+	private static int totalClientes = 0;
 	private int escolheBotao;
 	private Cliente pessoa;
-	
-	
-	
-	public Sorveteria(String nome, int numMaquina){
+	private Menu tela;
+
+	public Sorveteria(String nome, int numMaquina) {
 		this.nome = nome;
 		this.numMaquina = numMaquina;
-		imprimeMsgInicial(numMaquina);		
+		Menu.imprimeMsgInicial(numMaquina);
 	}
-	
-	
+
 	public void entrada(Cliente pessoa) {
 		Scanner input = new Scanner(System.in);
-		imprimeControleEntrada();
+		Menu.imprimeControleEntrada();
 		escolheBotao = input.nextInt();
 		switch (escolheBotao) {
 		case 0:
-			imprimeMsgFinal();
+			Menu.imprimeMsgFinal();
 			break;
 		case 1:
 			cadastraCliente(pessoa);
-			total ++;
+			totalClientes++;
 			giraRoleta = true;
 			break;
 		case 2:
 			verificaCadastro(pessoa);
 			break;
-	}
-	}
-	
-	
-	public boolean verificaCadastro(Cliente pessoa) {
-		Scanner input = new Scanner(System.in);
-		imprimeControleId();
-		int senha = input.nextInt();
-		pessoa.getCartao().setSenha(senha);
-		int num = pessoa.getCartao().getSenha();
-		// refazer logica
-		if (num == 1) {
-			giraRoleta = true;
-			return true;
-		} else {
-			imprimeMsgCadastro();
-			escolheBotao = input.nextInt();
-			switch (escolheBotao) {
-			case 0:
-				imprimeMsgFinal();
-				break;
-			case 1:
-				cadastraCliente(pessoa);
-				giraRoleta = true;
-				break;
-			}
-			return false;
 		}
 	}
+
+	public void verificaCadastro(Cliente pessoa) {
+		Scanner input = new Scanner(System.in);
+		Menu.imprimeControleId();
+		int senha = input.nextInt();
+		verificaSenha(senha);
+		Menu.imprimeAcesso();
+		giraRoleta = true;
+		}
 	
-	
+
 	public void cadastraCliente(Cliente pessoa) {
 		Scanner input = new Scanner(System.in);
-		imprimeNomeC();
+		Menu.imprimeNomeC();
 		String cNome = input.nextLine();
 		pessoa.setNome(cNome);
-		imprimemesDeNiverC();
+		Menu.imprimemesDeNiverC();
 		int cMes = input.nextInt();
 		pessoa.setMesDeNiver(cMes);
-		imprimeIdadeC();
+		Menu.imprimeIdadeC();
 		int cIdade = input.nextInt();
 		pessoa.setIdade(cIdade);
-		imprimeCadastro();
+		Menu.imprimeCadastro();
 		try {
-		 escreverArquivoCliente(pessoa);
+			escreverArquivoCliente(pessoa);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -91,9 +71,9 @@ public class Sorveteria {
 		} catch (InputMismatchException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void escreverArquivoCliente(Cliente pessoa) throws FileNotFoundException, IOException {
 
 		OutputStream file_out = new FileOutputStream("clientesCadastrados.txt");
@@ -105,77 +85,58 @@ public class Sorveteria {
 		buf_e.newLine();
 		buf_e.close();
 	}
-	
-	
 
-
-	public void imprimeNomeC() {
-		System.out.println("Digite seu Nome: ");
-		
+	public void definirSenha(int num) {
+		if (num >= 1000 && num <= 9999) {
+			pessoa.getCartao().setSenha(num);
+		} else {
+			Menu.senhaInvalida();
+			Menu.imprimeMsgCadastro();
+			Scanner input = new Scanner(System.in);
+			escolheBotao = input.nextInt();
+			switch (escolheBotao) {
+			case 0:
+				Menu.imprimeMsgFinal();
+				break;
+			case 1:
+				cadastraCliente(pessoa);
+				giraRoleta = true;
+				break;
+		}
 	}
-	public void imprimeIdadeC() {
-		System.out.println("Digite sua Idade: ");
-		
-	}
-	public void imprimemesDeNiverC() {
-		System.out.println("Digite o numero do seu Mes de Niver: ");
-		
-	}
-	
-	public void imprimeCadastro() {
-		System.out.println("---------Cadastrando Cliente----------");
-
-	}
-	
-	public void imprimeControleEntrada() {
-		System.out.println("Para Entrar Digite 2, Para se Cadastrar Digite 1, Para Sair Digite 0");
-	}
-	
-	public void imprimeControleId() {
-		System.out.println("Digite sua senha de cadastro do CartaoS: ");
-	}
-	
-	public void imprimeMsgInicial(int num) {
-		System.out.println("---------Boas Vindas:----------");
-		System.out.println("Maquina n: " + num);
-	}
-	
-	public void imprimeMsgFinal() {
-		System.out.println("---------Obrigada por ter vindo, Até logo!----------");
-	}
-	
-	public void imprimeMsgCadastro() {
-		System.out.println("---------Infos:----------");
-		System.out.println("Cliente não Cadastrado");
-		System.out.println("Para se Cadastrar Digite 1, Para Sair Digite 0");
 	}
 
+	public boolean verificaSenha(int num) {
+		if (num >= 1000 && num <= 9999) {
+			return true;
+		} else {
+			Menu.senhaInvalida();
+			return false;
+		}
+	}
 
 	public String getNome() {
 		return nome;
 	}
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
 	public boolean isGiraRoleta() {
 		return giraRoleta;
 	}
+
 	public void setGiraRoleta(boolean giraRoleta) {
 		this.giraRoleta = giraRoleta;
 	}
+
 	public int getNumMaquina() {
 		return numMaquina;
 	}
+
 	public void setNumMaquina(int numMaquina) {
 		this.numMaquina = numMaquina;
-	}
-
-	public int getTotal() {
-		return total;
-	}
-
-	public void setTotal(int total) {
-		this.total = total;
 	}
 
 	public int getEscolheBotao() {
@@ -192,5 +153,13 @@ public class Sorveteria {
 
 	public void setPessoa(Cliente pessoa) {
 		this.pessoa = pessoa;
+	}
+
+	public static int getTotalClientes() {
+		return totalClientes;
+	}
+
+	public static void setTotalClientes(int totalClientes) {
+		Sorveteria.totalClientes = totalClientes;
 	}
 }

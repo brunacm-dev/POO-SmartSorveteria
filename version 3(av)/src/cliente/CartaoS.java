@@ -5,27 +5,16 @@ public class CartaoS {
 	private int qtdItens = 0;
 
 	public void imprimeCartaoSS() {
-		System.out.println("---------Cartao SS:----------");
+		System.out.println("---------Cartao SmartS:----------");
 		System.out.println("Cliente: " + this.titular.getNome());
 		System.out.println("Codigo Cartao: " + this.senha);	
 		System.out.println("Qtd de Itens: " + this.qtdItens);
 	
 	}
 	
-	public boolean definirSenha(int num) {
-		if (num >= 1000 && num <= 9999) {
-			this.senha = num;
-			return true;
-		} else {
-			senhaInvalida();
-			return false;
-		}
-	}
+	// falta fazer os pedidos e as compras
 	
 	
-	public void senhaInvalida() {
-		System.out.println("Senha Invalida");
-	}
 	
 	public Cliente getTitular() {
 		return titular;
