@@ -15,6 +15,10 @@ public class Menu {
 		
 	}
 	
+	public static void dadoInvalido() {
+		System.out.println("Dado Invalido");
+	}
+	
 	public static void senhaInvalida() {
 		System.out.println("Senha Invalida");
 	}
@@ -29,12 +33,11 @@ public class Menu {
 		System.out.println("---------Cadastrando Cliente----------");
 
 	}
-	
+		
 	public static void imprimeAcesso() {
 		System.out.println("---------Boas compras----------");
 
 	}
-
 
 	public static void imprimeControleEntrada() {
 		System.out.println("Para Entrar Digite 2, Para se Cadastrar Digite 1, Para Sair Digite 0");
@@ -52,5 +55,14 @@ public class Menu {
 	
 	public static void imprimeMsgFinal() {
 		System.out.println("---------Obrigada por ter vindo, Até logo!----------");
+	}
+	
+	public static void controleCategoria() {
+		System.out.println("Digite 1 para Categoria Comum, 2 para Catergoria Premium, 3 para Categoria Elite");
+		
+	}
+	public static void controleTipo() {
+		System.out.println("Digite 1 para Sorvete Picole, 2 para Sorvetes de Caixa");
+		
 	}
 }

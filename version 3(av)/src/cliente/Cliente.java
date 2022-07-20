@@ -9,6 +9,7 @@ public class Cliente {
 	private int idade;
 	private int mesDeNiver;
 	protected CartaoS cartao;
+	
 
 	
 	public CartaoS getCartao() {

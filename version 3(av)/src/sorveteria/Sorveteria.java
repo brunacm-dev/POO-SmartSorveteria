@@ -14,6 +14,8 @@ public class Sorveteria {
 	private int escolheBotao;
 	private Cliente pessoa;
 	private Menu tela;
+	// tentar usar ArrayList futuramente
+	// private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 
 	public Sorveteria(String nome, int numMaquina) {
 		this.nome = nome;
@@ -47,20 +49,34 @@ public class Sorveteria {
 		verificaSenha(senha);
 		Menu.imprimeAcesso();
 		giraRoleta = true;
-		}
-	
+	}
 
 	public void cadastraCliente(Cliente pessoa) {
 		Scanner input = new Scanner(System.in);
 		Menu.imprimeNomeC();
 		String cNome = input.nextLine();
+		// fazer condicao para nome ser apenas string
 		pessoa.setNome(cNome);
+
 		Menu.imprimemesDeNiverC();
 		int cMes = input.nextInt();
-		pessoa.setMesDeNiver(cMes);
+		if (cMes >= 1 && cMes <= 12) {
+			pessoa.setMesDeNiver(cMes);
+		} else {
+			Menu.dadoInvalido();
+			Menu.imprimeMsgFinal();
+			return;
+		}
+
 		Menu.imprimeIdadeC();
 		int cIdade = input.nextInt();
-		pessoa.setIdade(cIdade);
+		if (cIdade >= 18 && cMes <= 110) {
+			pessoa.setIdade(cIdade);
+		} else {
+			Menu.dadoInvalido();
+			Menu.imprimeMsgFinal();
+			return;
+		}
 		Menu.imprimeCadastro();
 		try {
 			escreverArquivoCliente(pessoa);
@@ -102,8 +118,8 @@ public class Sorveteria {
 				cadastraCliente(pessoa);
 				giraRoleta = true;
 				break;
+			}
 		}
-	}
 	}
 
 	public boolean verificaSenha(int num) {
